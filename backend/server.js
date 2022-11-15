@@ -14,6 +14,8 @@ app.get('/', (req, res) => {
     res.send('You have reached the Home Page Route');
 })
 
+app.use('/decks', require('./controllers/decks'));
+
 //PORT
 const PORT = process.env.PORT || 8000;
 
