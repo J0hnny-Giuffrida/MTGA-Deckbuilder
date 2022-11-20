@@ -5,7 +5,7 @@ const deckSchema = new mongoose.Schema({
     colors: [{ 
         type: String,
         required: true,
-        enum: ['W', 'R', 'U', 'B', 'G'],
+        enum: ['W', 'R', 'U', 'B', 'G', 'N'],
      }],
      cards: [{ 
         name: String,
