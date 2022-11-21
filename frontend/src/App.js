@@ -1,6 +1,7 @@
 import './App.css';
 import Homepage from './components/Homepage';
 import Yourdecks from './components/Yourdecks';
+import DeckBuilder from './components/Deckbuilder';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Homepage />} />
           <Route path='/yourdecks' element={<Yourdecks />} />
+          <Route path='deck-builder' element={<DeckBuilder />} />
         </Routes>
       </div>
     </Router>
