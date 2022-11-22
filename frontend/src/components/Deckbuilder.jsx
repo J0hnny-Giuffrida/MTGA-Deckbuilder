@@ -48,7 +48,21 @@ function DeckBuilder() {
     const cardClick = () => {
         const newDeckCard = { name, manaCost, imageUrl, amount }
         setDeckCards([...deckCards, newDeckCard]);
-        console.log(deckCards)
+
+        for (let i = 0; i < deckCards.length; i++) {
+            if (newDeckCard.name === deckCards[i].name) {
+                if (deckCards[i].amount < 4) {
+                    deckCards[i].amount += 1
+                    deckCards.splice(deckCards.length, 1)
+                    setDeckCards([...deckCards])
+                } else {
+                    deckCards.splice(deckCards.length, 1)
+                    setDeckCards([...deckCards])
+                    console.log('Maximum amount of card in deck already')
+                }
+
+            }
+        }
     }
 
     const searchSubmit = (e) => {
