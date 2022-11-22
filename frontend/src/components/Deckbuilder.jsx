@@ -13,6 +13,7 @@ function DeckBuilder() {
     const [name, setName] = useState('')
     const [manaCost, setManaCost] = useState('none')
     const [imageUrl, setImageUrl] = useState('')
+    const [amount, setAmount] = useState(0)
     const [deckCards, setDeckCards] = useState([])
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState('')
@@ -45,7 +46,7 @@ function DeckBuilder() {
     }
 
     const cardClick = () => {
-        const newDeckCard = { name, manaCost, imageUrl }
+        const newDeckCard = { name, manaCost, imageUrl, amount }
         setDeckCards([...deckCards, newDeckCard]);
         console.log(deckCards)
     }
@@ -64,9 +65,10 @@ function DeckBuilder() {
                 <div className='h-28 border-b-4 border-neutral-50 rounded-xl' id='deck-title'></div>
                 {deckCards.map((deckCard, index) => {
                     return <div className='w-full h-8 border-2 border-neutral-50 rounded-lg text-neutral-50 my-px cursor-pointer' key={index} onClick={(e) => deckCards.splice(index, 1) & setDeckCards([...deckCards])}>
-                        <ul className='flex flex-cols'>
-                            <li>{deckCard.name}</li>
-                            <li>{deckCard.manaCost}</li>
+                        <ul className='grid grid-cols-10'>
+                            <li className='pl-2 text-lg'>{deckCard.amount}x</li>
+                            <li className='col-span-6 col-start-2 pl-1 border-l-2 border-neutral-200'>{deckCard.name}</li>
+                            <li className='col-start-8 col-span-3 text-right pr-1'>{deckCard.manaCost}</li>
                         </ul>
                     </div>
                 })}
@@ -125,7 +127,7 @@ function DeckBuilder() {
                     {cards.map((card, index) => {
                         return <div className="w-full h-fit" key={index}>
                             <ul>
-                                <li className=""><img src={card.imageUrl} alt={card.name} className='border-2 border-sky-50 rounded-xl cursor-pointer transition ease-in-out delay-100 hover:translate-x-1 hover:-translate-y-1' onMouseOver={(e) => setName(card.name) & setManaCost(card.manaCost) & setImageUrl(card.imageUrl)} onClick={cardClick} /></li>
+                                <li className=""><img src={card.imageUrl} alt={card.name} className='border-2 border-sky-50 rounded-xl cursor-pointer transition ease-in-out delay-100 hover:translate-x-1 hover:-translate-y-1' onMouseOver={(e) => setName(card.name) & setManaCost(card.manaCost) & setImageUrl(card.imageUrl) & setAmount(1)} onClick={cardClick} /></li>
                             </ul>
                         </div>
                     })}
