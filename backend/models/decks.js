@@ -7,7 +7,7 @@ const deckSchema = new mongoose.Schema({
         enum: ['W', 'R', 'U', 'B', 'G', 'N'],
      }],
      cards: [{ 
-        name: String,
+        cardName: String,
         manaCost: String, //Need to figure out colorless mana and multiple colored mana of the same type
         imageUrl: String,
         amount: Number

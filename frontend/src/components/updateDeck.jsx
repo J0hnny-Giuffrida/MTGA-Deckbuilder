@@ -6,9 +6,10 @@ import island from '../lined/Island_Outlined.png'
 import swamp from '../lined/Swamp_Outlined.png'
 import mountain from '../lined/Mountain_Outlined.png'
 import forest from '../lined/Forest_Outlined.png'
+import { Link, useParams } from 'react-router-dom'
 
 
-function DeckBuilder() {
+function UpdateDeck() {
     const [mtgCards, setMtgCards] = useState([]);
     const [cardName, setCardName] = useState('')
     const [manaCost, setManaCost] = useState('none')
@@ -19,14 +20,24 @@ function DeckBuilder() {
     const [search, setSearch] = useState('')
     const [color, setColor] = useState('')
     const [name, setName] = useState('')
+    const { id } = useParams();
+    const [singleDeck, setSingleDeck] = useState({})
 
     const mtgCardAPI = `https://api.magicthegathering.io/v1/cards?gameFormat=standard&contains=imageUrl&pageSize=12&page=${page}&name=${search}&color=`
+    const singleDeckAPI = `http://localhost:8000/decks/${id}`
+
+    useEffect(() => {
+        fetch(singleDeckAPI)
+            .then((res) => res.json())
+            .then((singleDeck) => setSingleDeck(singleDeck))
+    }, []);
 
     useEffect(() => {
         fetch(mtgCardAPI)
             .then((res) => res.json())
             .then((mtgCards) => setMtgCards(mtgCards.cards));
     }, []);
+
 
     const pageDown = () => {
         if (page != 1) {
@@ -73,17 +84,16 @@ function DeckBuilder() {
             .then((mtgCards) => setMtgCards(mtgCards.cards))
     }
 
-    const deckSave = (e) => {
+    const deckUpdate = (e) => {
         e.preventDefault();
-        const deck = { name, cards }
+        const updatedDeck = { name, cards }
 
-        fetch('http://localhost:8000/decks', {
-            method: 'POST',
+        fetch(singleDeckAPI, {
+            method: 'PUT',
             headers: { 'CONTENT-Type': 'application/json' },
-            body: JSON.stringify(deck)
+            body: JSON.stringify(updatedDeck)
         }).then(() => {
-            console.log('New Deck Added')
-            console.log(deck)
+            console.log('Deck Updated')
         })
     }
 
@@ -91,18 +101,19 @@ function DeckBuilder() {
         <div className='h-full w-full flex flex-cols'>
             <div className='h-full w-1/5 border-4 border-neutral-50 rounded-xl' id='deck-cards'>
                 <div className='h-28 border-b-4 border-neutral-50 rounded-xl' id='deck-title'>
-                    <form className='w-full h-full grid grid-rows-3' onSubmit={deckSave}>
+                    <form className='w-full h-full grid grid-rows-3' onSubmit={deckUpdate}>
                         <label className="text-md text-neutral-50 text-center pt-1" htmlFor="deckName">Deck Name:</label>
                         <input
                             className="w-1/2 h-full text-LG text-center font-bold border border-zinc-800 px-3 rounded-lg mb-5 shadow-sm mx-auto focus:outline-none focus:border-amber-600"
                             type="text"
                             name="name"
-                            value={name}
+
                             onChange={(e) => setName(e.target.value)}
                             autoComplete="off"
                             required
+                            defaultValue={singleDeck.name}
                         />
-                        <button type='submit' className='w-1/3 h-3/5 rounded-full border-2 border-neutral-50 text-center text-neutral-50 mx-auto mt-1 pb-6'>Save Deck</button>
+                        <button type='submit' className='w-1/3 h-3/5 rounded-full border-2 border-neutral-50 text-center text-neutral-50 mx-auto mt-1 pb-6'>Update Deck</button>
                     </form>
                 </div>
                 {cards.map((card, index) => {
@@ -179,4 +190,4 @@ function DeckBuilder() {
     )
 }
 
-export default DeckBuilder;
+export default UpdateDeck;
